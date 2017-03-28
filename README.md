@@ -85,7 +85,7 @@ Ao fazer este exercício, fique conferindo, no navegador, como a página está f
         - Imagem do baú em: `imgs/moedas.png`
         - Nome: Moedas de ouro
         - Valor unitário: 10
-        - Quantidade: 10
+        - Quantidade: 835
         - Valor total: 8.350
      1. Coroas:
         - Imagem do baú em: `imgs/coroa.png`
