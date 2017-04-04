@@ -12,7 +12,9 @@ tesouros seguindo os passos descritos a seguir.
 ### Exercício 1: _setup_ e estrutura básica
 
 1. [Baixe as imagens e o ícone][images-icon] que serão usados
-1. **Crie uma pasta** na área de trabalho com o nome `tesouro-piratas`
+1. Descompacte o arquivo `cefet-front-end-pirates-master.zip` na área de trabalho
+   - Isto criará uma pasta com o nome `cefet-front-end-pirates-master` lá
+1. **Renomeie** a pasta criada na área de trabalho para `tesouro-piratas`
 1. **Crie um arquivo `index.html`** na mesma pasta e siga os passos:
   - Por que dar o nome de `index.html`?
     - Veja o [FAQ](#faq)
