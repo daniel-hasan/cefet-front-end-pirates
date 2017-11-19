@@ -86,40 +86,32 @@ dentro do arquivo HTML. Por exemplo:
 
 [php-echo]: http://php.net/manual/en/function.echo.php
 
-### Exercício 3: criando o banco de dados dos tesouros
+### Exercício 3: criando o banco de dados dos tesouros e conectando a ele
 
 Agora, você deve criar o banco de dados para guardar os tesouros dos piratas.
 Para isso, siga o [tutorial de como acessar o phpMyAdmin][tutorial-phpmyadmin]
 e, depois, siga o
 [tutorial para criar o banco de dados][tutorial-banco-de-dados] que vamos usar.
 
-Use o arquivo `banco-dos-tesouros.sql` que veio com o código seminal quando
+Use o arquivo `piratas.sql` que veio com o código seminal quando
 o tutorial instruir você a carregar o _script_ que cria a tabela `tesouros`
-no banco de dados que você está criando.
+no banco de dados `banco-dos-piratas` que você está criando. Por curiosidade,
+abra o arquivo `piratas.sql` usando um editor de texto (_e.g._, Notepad++)
+e veja o que há dentro dele.
 
-[tutorial-phpmyadmin]: DAKHFAKDSHFKASHDFKJADLK
-[tutorial-banco-de-dados]: IRUAHEIUFHAIFUHEAIHEAIEH
-
-
-### Exercício 4: lendo tesouros do banco de dados
-
-Neste exercício você vai alterar o `index.php` para ler os tesouros do
-banco de dados, em vez de deixá-los fixos na página.
-
-Para isso, você deve primeiramente instruir o PHP para conectar com o
-banco de dados. Coloque no topo do seu arquivo `index.php`, antes
-mesmo do `<!DOCTYPE html>`:
+Agora, altere o `index.php` para conectar com o banco de dados. Coloque
+no topo do seu arquivo `index.php`, antes mesmo do `<!DOCTYPE html>`:
 
 ```php
 <?php
-  // faz a conexão com o banco de dados
+  // faz a conexão com o banco de dados que criamos no MySQL usando o phpMyAdmin
   //                    endereço    usuario  senha   nome do banco
   $db = mysqli_connect("localhost", "root", "123456", "piratas");
   $db->set_charset("utf8");
 
   // verifica se a conexão funcionou...
   if (!$db) {
-    // encerra a execução do script php, dando um erro
+    // encerra a execução do script php, mostrando um erro
     $descricaoErro = "Erro: não foi possível conectar ao banco de dados. ";
     $descricaoErro = $descricaoErro . "Detalhes: " . mysqli_connect_error();
     die($descricaoErro);
@@ -133,11 +125,68 @@ mesmo do `<!DOCTYPE html>`:
 
 Recarregue a página e certifique-se de que ela continua idêntica. Se tiver
 dado algum erro ao conectar ao banco de dados, ele será exibido no
-navegador e deve ser corrigido (talvez a senha esteja errada, por exemplo).
+navegador e deve ser corrigido (talvez a senha esteja errada, ou o nome
+do banco que você criou seja outro, por exemplo).
 
-Agora, você deve escrever código PHP para fazer uma **consulta na tabela
-`tesouros`** para pegar todos os tesouros.
+[tutorial-phpmyadmin]: DAKHFAKDSHFKASHDFKJADLK
+[tutorial-banco-de-dados]: IRUAHEIUFHAIFUHEAIHEAIEH
 
+
+### Exercício 4: lendo tesouros do banco de dados
+
+Neste exercício você vai alterar o `index.php` para ler os tesouros do
+banco de dados, em vez de deixá-los fixos na página.
+
+Para isso, você deve escrever código PHP para (a) fazer uma **consulta na tabela
+`tesouros` do banco de dados** para pegar todos os tesouros, colocando o
+resultado em um _array_ (vetor) e, depois, (b) **percorrer o _array_**
+e (c) colocar uma **linha da tabela HTML para cada tesouro no _array_**.
+
+Para (a), logo antes de colocar a `<table>` no `index.php`, coloque:
+```php
+  ...
+  <?php
+    // faz uma consulta no banco de dados para pegar todos os tesouros cadastrados
+    $sql = "SELECT * FROM tesouros";
+    $resultado = $db->query($sql);
+  ?>
+  <table>
+    <caption>...</caption>
+    <thead>
+      ...
+```
+
+Agora, para (b), envolva a linha da tabela (`<tr>...</tr>`) que
+coloca o "tesouro de exemplo" dentro de um `foreach` do PHP que vai percorrer
+todos os tesouros que foram encontrados no banco de dados. O código ficará
+assim:
+
+```php
+  <table>
+    ...
+    <tbody>
+      <?php
+        // $resultado é o array que vamos percorrer
+        // $tesouro é a variável que contém o elemento atual do array
+        foreach ($resultado as $tesouroAtual) {
+      ?>
+      <tr>
+        ...
+      </tr>
+      <?php
+        }
+      ?>
+    </tbody>
+    ...
+```
+
+Neste momento, ao recarregar a página no navegador, ela deve mostrar o
+"tesouro de exemplo" repetidamente quatro vezes (porque há 4 tesouros
+no banco de dados).
+
+Por fim, para (c), altere as linhas com o HTML do "tesouro de exemplo"
+para escrever, no HTML, os dados referentes ao "tesouro atual"
+(que está na variável `$tesouroAtual`).
 
 // CONTINUAR DAQUI....
 
