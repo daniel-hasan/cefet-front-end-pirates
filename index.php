@@ -22,6 +22,11 @@
   </head>
   <body>
     <h1>Gerenciador de Tesouros <?php echo "(by Coutinho)"?></h1>
+    <?php
+      // faz uma consulta no banco de dados para pegar todos os tesouros cadastrados
+      $sql = "SELECT * FROM tesouros";
+      $resultado = $db->query($sql);
+    ?>
     <table>
       <caption>Estes são os tesouros acumulados do Barba-Ruiva em suas aventuras</caption>
       <thead>
@@ -34,6 +39,11 @@
         </tr>
       </thead>
       <tbody>
+        <?php
+          // $resultado é o array que vamos percorrer
+          // $tesouroAtual é a variável que contém o elemento atual do array
+          foreach ($resultado as $tesouroAtual) {
+        ?>
         <tr>
           <td><img src="imgs/exemplo-de-icone.png"></td>
           <td>Tesouro de exemplo</td>
@@ -41,6 +51,9 @@
           <td>5</td>
           <td>1.000</td>
         </tr>
+        <?php
+          }
+        ?>
       </tbody>
       <tfoot>
         <tr>
