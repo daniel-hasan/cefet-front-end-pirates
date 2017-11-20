@@ -1,3 +1,17 @@
+<?php
+  // faz a conexão com o banco de dados que criamos no MySQL usando o phpMyAdmin
+  //                    endereço    usuario  senha   nome do banco
+  $db = mysqli_connect("localhost", "root", "123456", "banco-dos-piratas");
+  $db->set_charset("utf8");
+
+  // verifica se a conexão funcionou...
+  if (!$db) {
+    // encerra a execução do script php, mostrando um erro
+    $descricaoErro = "Erro: não foi possível conectar ao banco de dados. ";
+    $descricaoErro = $descricaoErro . "Detalhes: " . mysqli_connect_error();
+    die($descricaoErro);
+  }
+?>
 <!DOCTYPE html>
 <html>
   <head>
