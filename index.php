@@ -45,11 +45,11 @@
           foreach ($resultado as $tesouroAtual) {
         ?>
         <tr>
-          <td><img src="imgs/exemplo-de-icone.png"></td>
-          <td>Tesouro de exemplo</td>
-          <td>200</td>
-          <td>5</td>
-          <td>1.000</td>
+          <td><img src="<?= $tesouroAtual["icone"] ?>"></td>
+          <td><?= $tesouroAtual["nome"] ?></td>
+          <td><?= $tesouroAtual["valorUnitario"] ?></td>
+          <td><?= $tesouroAtual["quantidade"] ?></td>
+          <td><?= $tesouroAtual["quantidade"] * $tesouroAtual["valorUnitario"] ?></td>
         </tr>
         <?php
           }
