@@ -40,21 +40,21 @@
       <tbody>
         <?php
         $total = 0;
-        foreach ($result as $tesouro) {
-          $total += $tesouro["valorUnitario"] * $tesouro["quantidade"];
+        foreach ($resultado as $tesouroAtual) {
+          $total += $tesouroAtual["valorUnitario"] * $tesouroAtual["quantidade"];
         ?>
         <tr>
-          <td><img src="<?php echo $tesouro["icone"] ?>"></td>
-          <td><?php echo $tesouro["nome"] ?></td>
-          <td><?php echo number_format($tesouro["valorUnitario"], 0, ",", ".") ?></td>
-          <td><?php echo $tesouro["quantidade"] ?></td>
-          <td><?php echo number_format($tesouro["valorUnitario"] * $tesouro["quantidade"], 0, ",", ".") ?></td>
+          <td><img src="<?= $tesouroAtual["icone"] ?>"></td>
+          <td><?= $tesouroAtual["nome"] ?></td>
+          <td><?= number_format($tesouroAtual["valorUnitario"], 0, ",", ".") ?></td>
+          <td><?= $tesouroAtual["quantidade"] ?></td>
+          <td><?= number_format($tesouroAtual["valorUnitario"] * $tesouroAtual["quantidade"], 0, ",", ".") ?></td>
         </tr>
       <?php } ?>
       </tbody>
       <tfoot>
         <tr>
-          <td colspan="4">Total</td>
+          <td colspan="4">Total geral</td>
           <td><?=number_format($total, 0, ",", ".")?></td>
         </tr>
       </tfoot>

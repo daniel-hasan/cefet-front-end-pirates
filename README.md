@@ -47,11 +47,11 @@ executá-las antes de entregar o arquivo para o navegador. Como ainda não há
 nenhuma _tag_, o resultado foi idêntico ao anterior.
 
 
-¹: Normalmente o Wamp é instalado na pasta `C:\wamp`. Logo, procure
-pelo diretório `C:\wamp\www\` e coloque a pasta `piratas` lá dentro.
+¹: Normalmente o Wamp é instalado na pasta `C:\wamp64`. Logo, procure
+pelo diretório `C:\wamp64\www\` e coloque a pasta `piratas` lá dentro.
 
-²: Se você não sabe o que significa `localhost` e é curioso, leia sobre isso
-no FAQ.
+²: Se você não sabe o que significa `localhost` e tem curiosidade, leia
+sobre isso no FAQ.
 
 [tutorial-wamp-decom]: AKDJFALKJDFLKAJDFLJDALKJFLAKJFDAL
 
@@ -64,25 +64,42 @@ Agora vamos escrever seu nome no arquivo `index.php` usando
 seu nome**, de forma que fique assim:
 `<h1>Gerenciador de tesouros (by SEU NOME)</h1>`.
 
-Uma _tag_ PHP é delimitada por `<?php //... ?>`, que também pode ser
-escrita assim: `<? //... ?>` (sem o `php` na abertura).
+Uma _tag_ PHP é delimitada por `<?php ...código aqui... ?>`, que também pode ser
+escrita assim: `<? ...código aqui... ?>` (sem o `php` na abertura).
 
-O comando `echo` recebe 01 parâmetro e simplesmente escreve alguma coisa
-dentro do arquivo HTML. Por exemplo:
+O comando `echo` simplesmente escreve alguma coisa dentro do arquivo
+HTML. Por exemplo:
 
 ```php
-...
-<body>
-  <h1>
-    Olá! Seja bem vindo, <?php echo "Pirata"; ?>!
-  </h1>
-  ...
-</body>
-</html>
+<h1>
+  Olá! Seja bem vindo, <?php echo "Pirata"; ?>!
+</h1>
+```
+...se transforma em:
+```html
+<h1>
+  Olá! Seja bem vindo, Pirata!
+</h1>
 ```
 
-É possível chamar o [`echo`][php-echo] usando parênteses ou sem parênteses
-(como feito acima).
+É possível chamar o [`echo`][php-echo] **implicitamente** também, da seguinte
+forma:
+
+```php
+<?="alguma coisa";?>
+...que é o mesmo que:
+<?php echo "alguma coisa"; ?>
+```
+
+Assim como uma string, é possível passar uma variável para o `echo`. Por
+exemplo:
+
+```php
+<?php
+  $meuNome = "Estegônisson Almeida";
+  echo $meuNome;
+?>
+```
 
 [php-echo]: http://php.net/manual/en/function.echo.php
 
@@ -142,7 +159,7 @@ Para isso, você deve escrever código PHP para (a) fazer uma **consulta na tabe
 resultado em um _array_ (vetor) e, depois, (b) **percorrer o _array_**
 e (c) colocar uma **linha da tabela HTML para cada tesouro no _array_**.
 
-Para (a), logo antes de colocar a `<table>` no `index.php`, coloque:
+Para (a), logo antes de aparecer a `<table>` no `index.php`, coloque:
 ```php
   ...
   <?php
@@ -167,7 +184,7 @@ assim:
     <tbody>
       <?php
         // $resultado é o array que vamos percorrer
-        // $tesouro é a variável que contém o elemento atual do array
+        // $tesouroAtual é a variável que contém o elemento atual do array
         foreach ($resultado as $tesouroAtual) {
       ?>
       <tr>
@@ -181,24 +198,70 @@ assim:
 ```
 
 Neste momento, ao recarregar a página no navegador, ela deve mostrar o
-"tesouro de exemplo" repetidamente quatro vezes (porque há 4 tesouros
+"tesouro de exemplo" repetidamente 4 vezes (porque há 4 tesouros
 no banco de dados).
 
 Por fim, para (c), altere as linhas com o HTML do "tesouro de exemplo"
 para escrever, no HTML, os dados referentes ao "tesouro atual"
-(que está na variável `$tesouroAtual`).
+(que está na variável `$tesouroAtual`). A cada iteração do _foreach_, a
+variável `$tesouroAtual` representa uma linha da tabela do banco de dados
+(ou seja, as informações sobre 01 tesouro).
 
-// CONTINUAR DAQUI....
+No banco de dados, a tabela possui 5 colunas, das quais vamos precisar das
+4 últimas:
 
-### Exercício 5: total de cada tesouro
+![As 5 colunas da tabela de tesouros](docs/tabela-tesouros.png)
+
+Para pegar o valor de uma coluna, usamos a seguinte sintaxe:
+`$tesouroAtual["nomeDaColuna"]`. Por exemplo, pra pegar o valor unitário
+do tesouro e escrevê-lo no HTML:
+
+```php
+<?php echo $tesouroAtual["valorUnitario"] ?>
+```
+...ou, mais sucintamente:
+<?= $tesouroAtual["valorUnitario"] ?>
+
+Há dois detalhes que requerem atenção:
+1. Você deve colocar o nome do arquivo do ícone dentro do atributo `src`
+   da `img`. **É válido** colocar uma _tag_ PHP dentro de um atributo,
+   tipo assim:
+   ```php
+   <img src="<?php ... ?>">
+   ````
+1. A última coluna (valor total do tesouro) não está armazenada no banco -
+   porque ela é um cálculo: `quantidade` x `valorUnitario`. Portanto, você
+   deve multiplicar o valor que pegou da coluna `quantidade` e multiplicá-lo
+   pelo valor que pegou da coluna `valorUnitario`.
+
 
 ### Desafio 1: total geral dos tesouros
 
+Agora você deve tornar dinâmico o cálculo do total geral dos tesouros - a soma
+da última coluna de todos eles. Para isso, você deve criar uma variável
+`$totalGeral` fora do _loop_ e, a cada iteração, acumular nela o total daquele
+tesouro.
+
+Ao final do `foreach`, essa variável terá o valor que é a soma dos
+valores de todos os tesouros. Você deve escrevê-la no rodapé da tabela
+(_i.e._, no `<tfoot>...</tfoot>`).
+
+
 ### Desafio 2: formatando números
 
-### Desafio 3: cadastrando um novo tesouro no banco de dados
+É possível formatar os números (valor unitário, valor total e total geral)
+para usar o separador de milhar e mostrar 8.135 em vez de 8135, por exemplo.
 
-### Desafio 4: acessando o MySQL no computador ao lado
+Para tanto, existe a função `number_format`, que recebe 4 parâmetros e retorna
+o número passado no primeiro formatado de acordo com a configuração dos outros
+3 parâmetros.
+
+Neste desafio, você deve ver a documentação do `number_format` e alterar
+o código para formatar a quantidade, o valor unitário, o valor total e o total
+geral usando o separador de milhar com o caractere "." (ponto).
+
+[php-number_format]: v
+
 
 ## FAQ
 
@@ -208,6 +271,11 @@ podem surgir ao fazer este exercício, bem como as suas respostas.
 
 ### Por quê devo dar o nome de `index.php` ao meu arquivo?
 
+Um arquivo `.php` é um arquivo HTML que é preprocessado pelo Apache em busca de
+_tags_ da linguagem PHP, ou seja, as `<?php ... ?>` ou `<? ... ?>`.
+
+Da mesma forma que o `index.html` se refere à página inicial de um
+site estático, o `index.php` se refere à inicial de um dinâmico.
 
 
 ### O que é `localhost`?
@@ -239,19 +307,3 @@ abra o **"arquivo _hosts_"** do computador:
 - No Windows, ele costuma ficar em: `C:\windows\system32\drivers\etc\hosts`
   (abra-o com o notepad++, por exemplo)
 - No Ubuntu: `/etc/hosts` (abra-o com o gedit, por exemplo)
-
-
-### Como descobrir o endereço IP do meu computador na rede local?
-
-Para que outro computador possa acessar o seu, na rede, você deve fornecer a
-ele qual é o endereço IP da sua máquina. Para descobrir, uma possível forma
-é usando um comando no terminal:
-
-- No Windows:
-  ```
-  C:\> ipconfig
-  ```
-- No Linux:
-  ```
-  $ ifconfig
-  ```
