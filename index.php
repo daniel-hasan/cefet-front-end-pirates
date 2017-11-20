@@ -7,7 +7,7 @@
     <link rel="icon" href="calice.ico">
   </head>
   <body>
-    <h1>Gerenciador de Tesouros</h1>
+    <h1>Gerenciador de Tesouros <?php echo "(by Coutinho)"?></h1>
     <table>
       <caption>Estes são os tesouros acumulados do Barba-Ruiva em suas aventuras</caption>
       <thead>
