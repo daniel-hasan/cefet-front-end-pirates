@@ -40,7 +40,8 @@ servindo (_i.e._, entregando) os arquivos HTML, CSS, imagens etc sem fazer
 nenhuma modificação neles.
 
 Por fim, (f) **renomeie** o arquivo `index.html` **para `index.php`** e
-acesse o site novamente (`http://localhost/piratas/`). O que mudou?
+acesse o site novamente (`http://localhost/piratas/`).  O que mudou? Atenção: no Windows, a extensão
+geralmente está oculta ento, para renomear, você deve acessar `exibir`->`extensão de nomes de arquivos`
 
 Visualmente, nada foi alterado. Mas, agora, o Apache varreu o arquivo
 `index.php` em busca de _tags_ do PHP (_i.e._, as `<?php ... ?>`) para
